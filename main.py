@@ -1,5 +1,6 @@
 import telebot
 from telebot import types
+import log_db
 
 types_num = 0
 
@@ -16,7 +17,7 @@ def calc(message):
 
 
 @bot.message_handler(content_types=['text'])
-def buttons (message):
+def buttons(message):
     global types_num
     a = types.ReplyKeyboardRemove()
     if message.text == 'Рациональные':
@@ -58,7 +59,9 @@ def controller(message):
         res = div_int(a, b)
     elif znak == '%':
         res = div_rem(a, b)
+    log_db.save_data(res, message)
     bot.send_message(message.chat.id, str(res))
+
 
 def summ_nums(a, b):
     return a + b
